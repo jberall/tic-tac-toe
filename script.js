@@ -50,5 +50,53 @@ function turnClick(square) {
  */
 function turn(squareId, player) {
   origBoard[squareId] = player;
+  //   sets the cell key value
   document.getElementById(squareId).innerText = player;
+  /** check if game won */
+  let gameWon = checkWin(origBoard, player);
+  if (gameWon) {
+    gameOver(gameWon);
+  }
+}
+
+function checkWin(board, player) {
+  //   console.log(origBoard, player);
+  /**
+   * all the places on the board that have already been played in
+   * returns the accumulator and initialize with []
+   * e = element
+   * i = index
+   * finds all the index the player has touched
+   */
+  let plays = board.reduce((a, e, i) => (e === player ? a.concat(i) : a), []);
+  //   console.clear();
+  //   console.log(plays);
+  let gameWon = null;
+
+  /**
+   * loop thru every win combo
+   * winCombo.entries returns the index and win
+   */
+  for (let [index, win] of winCombos.entries()) {
+    // console.log(index, win);
+    /**
+     * win.every go thru every element in the win
+     * has the player played in every spot to check for win combo.
+     */
+    if (win.every(elem => plays.indexOf(elem) > -1)) {
+      gameWon = { index, player };
+      break;
+    }
+  }
+  return gameWon;
+}
+
+function gameOver(gameWon) {
+  for (let index of winCombos[gameWon.index]) {
+    document.getElementById(index).style.backgroundColor =
+      gameWon.player == huPlayer ? 'blue' : 'red';
+  }
+  for (var i = 0; i < cells.length; i++) {
+    cells[i].removeEventListener('click', turnClick, false);
+  }
 }
