@@ -39,8 +39,15 @@ function startGame() {
  * @param {clickEvent} square
  */
 function turnClick(square) {
+  //   console.log('here', typeof origBoard[square.target.id]);
   //   console.log(square.target.id);
-  turn(square.target.id, huPlayer);
+  //   check if the square has been clicked
+  if (typeof origBoard[square.target.id] == 'number') {
+    turn(square.target.id, huPlayer);
+    if (!checkTie()) {
+      turn(bestSpot(), aiPlayer);
+    }
+  }
 }
 
 /**
@@ -99,4 +106,37 @@ function gameOver(gameWon) {
   for (var i = 0; i < cells.length; i++) {
     cells[i].removeEventListener('click', turnClick, false);
   }
+  declareWinner(gameWon.player == huPlayer ? 'You Win!' : 'You Lose!');
+}
+
+/**
+ * @returns {Array} first empty square
+ */
+function emptySquares() {
+  return origBoard.filter(s => typeof s == 'number');
+}
+
+/**
+ * how to find the best spot for the ai Player
+ */
+function bestSpot() {
+  return emptySquares()[0];
+}
+function declareWinner(who) {
+  document.querySelector('.endgame').style.display = 'block';
+  document.querySelector('.endgame .text').innerHTML = who;
+}
+/**
+ * if all the squares are used up it's a tie.
+ */
+function checkTie() {
+  if (emptySquares().length == 0) {
+    for (var i = 0; i < cells.length; i++) {
+      cells[i].style.backgroundColor = 'green';
+      cells[i].removeEventListener('click', turnClick, false);
+    }
+    declareWinner('Tie Game!');
+    return true;
+  }
+  return false;
 }
