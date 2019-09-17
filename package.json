@@ -1,0 +1,25 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "description": "Machine Learning Tic Tac Toe https://www.youtube.com/watch?v=P2TcQ3h0ipQ",
+  "main": "script.js",
+  "dependencies": {
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ts-node": "ts-node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jberall/tic-tac-toe.git"
+  },
+  "author": "Jonathan Berall",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jberall/tic-tac-toe/issues"
+  },
+  "homepage": "https://github.com/jberall/tic-tac-toe#readme"
+}
