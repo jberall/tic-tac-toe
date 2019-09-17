@@ -47,7 +47,9 @@ function turnClick(square) {
   if (typeof origBoard[square.target.id] == 'number') {
     turn(square.target.id, huPlayer);
     if (!checkTie()) {
-      turn(bestSpot(), aiPlayer);
+      // turn(bestSpot(), aiPlayer);
+      if (!checkWin(origBoard, huPlayer) && !checkTie())
+        turn(bestSpot(), aiPlayer);
     }
   }
 }
@@ -78,6 +80,7 @@ function checkWin(board, player) {
    * finds all the index the player has touched
    */
   let plays = board.reduce((a, e, i) => (e === player ? a.concat(i) : a), []);
+
   //   console.clear();
   //   console.log(plays);
   let gameWon = null;
@@ -93,7 +96,7 @@ function checkWin(board, player) {
      * has the player played in every spot to check for win combo.
      */
     if (win.every(elem => plays.indexOf(elem) > -1)) {
-      gameWon = { index, player };
+      gameWon = { index: index, player: player };
       break;
     }
   }
