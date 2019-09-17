@@ -14,10 +14,9 @@ const winCombos = [
   [6, 4, 2]
 ];
 
+const cells = document.querySelectorAll('.cell');
 // keep track of function calls
 var fc = 0;
-const cells = document.querySelectorAll('.cell');
-
 startGame();
 
 function startGame() {
@@ -28,7 +27,7 @@ function startGame() {
   /** loop thru each cell */
   for (var i = 0; i < cells.length; i++) {
     /** reset cell text value */
-    cells[i].innerHTML = '';
+    cells[i].innerText = '';
     /** reset background color */
     cells[i].style.removeProperty('background-color');
     /** add event listener */
@@ -41,16 +40,10 @@ function startGame() {
  * @param {clickEvent} square
  */
 function turnClick(square) {
-  //   console.log('here', typeof origBoard[square.target.id]);
-  //   console.log(square.target.id);
-  //   check if the square has been clicked
   if (typeof origBoard[square.target.id] == 'number') {
     turn(square.target.id, huPlayer);
-    if (!checkTie()) {
-      // turn(bestSpot(), aiPlayer);
-      if (!checkWin(origBoard, huPlayer) && !checkTie())
-        turn(bestSpot(), aiPlayer);
-    }
+    if (!checkWin(origBoard, huPlayer) && !checkTie())
+      turn(bestSpot(), aiPlayer);
   }
 }
 
@@ -130,10 +123,6 @@ function bestSpot() {
   // console.log(miniMax);
   return miniMax.index;
 }
-function declareWinner(who) {
-  document.querySelector('.endgame').style.display = 'block';
-  document.querySelector('.endgame .text').innerHTML = who;
-}
 /**
  * if all the squares are used up it's a tie.
  */
@@ -149,6 +138,11 @@ function checkTie() {
   return false;
 }
 
+function declareWinner(who) {
+  document.querySelector('.endgame').style.display = 'block';
+  document.querySelector('.endgame .text').innerText = who;
+}
+
 /**
  * Ai Logic to never loose
  * when human wins score: -10
@@ -158,11 +152,11 @@ function checkTie() {
  * @param {huPlayer | aiPlayer} player
  */
 function minimax(newBoard, player) {
-  //keep track of function calls;
+  // keep track of function calls;
   // console.log('function calls: ' + fc);
   fc++;
   // gets the emptySquares
-  var availSpots = emptySquares(newBoard);
+  var availSpots = emptySquares();
   // check to see if game over
   // human wins
   if (checkWin(newBoard, huPlayer)) {
@@ -197,22 +191,23 @@ function minimax(newBoard, player) {
     newBoard[availSpots[i]] = move.index;
 
     moves.push(move);
-    var bestMove;
-    if (player === aiPlayer) {
-      var bestScore = -10000;
-      for (var i = 0; i < moves.length; i++) {
-        if (moves[i].score > bestScore) {
-          bestScore = moves[i].score;
-          bestMove = i;
-        }
+  }
+
+  var bestMove;
+  if (player === aiPlayer) {
+    var bestScore = -10000;
+    for (var i = 0; i < moves.length; i++) {
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
       }
-    } else {
-      var bestScore = 10000;
-      for (var i = 0; i < moves.length; i++) {
-        if (moves[i].score < bestScore) {
-          bestScore = moves[i].score;
-          bestMove = i;
-        }
+    }
+  } else {
+    var bestScore = 10000;
+    for (var i = 0; i < moves.length; i++) {
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
       }
     }
   }
