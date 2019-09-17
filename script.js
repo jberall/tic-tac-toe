@@ -14,6 +14,8 @@ const winCombos = [
   [6, 4, 2]
 ];
 
+// keep track of function calls
+var fc = 0;
 const cells = document.querySelectorAll('.cell');
 
 startGame();
@@ -153,6 +155,9 @@ function checkTie() {
  * @param {huPlayer | aiPlayer} player
  */
 function minimax(newBoard, player) {
+  //keep track of function calls;
+  // console.log('function calls: ' + fc);
+  fc++;
   // gets the emptySquares
   var availSpots = emptySquares(newBoard);
   // check to see if game over
